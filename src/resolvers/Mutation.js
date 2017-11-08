@@ -1,7 +1,9 @@
-import { addUser } from './users';
+import { addUser, updateUser, deleteUser } from "./users";
 
 export const Mutation = {
-  addUser
+  addUser,
+  updateUser,
+  deleteUser
 }
 
 export default Mutation;

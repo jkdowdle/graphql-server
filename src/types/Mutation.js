@@ -2,8 +2,8 @@ import User from './User';
 
 export const Mutation = `
   type Mutation {
-    addUser(firstName: String!, age: Int!): User
+    addUser(input: UserInput!): User
   }
-`
+`;
 
 export default () => [ Mutation, User ];

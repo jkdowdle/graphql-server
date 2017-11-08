@@ -7,7 +7,8 @@
     "start": "pm2 kill && pm2 start src/index.js --watch --interpreter ./node_modules/.bin/babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "logs": "pm2 logs",
-    "kill": "pm2 kill"
+    "kill": "pm2 kill",
+    "delete-logs": "pm2 flush"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
