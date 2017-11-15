@@ -10,6 +10,7 @@ let usersData = [
 ];
 
 export const users = () => {
+  console.log('users')
   return usersData;
 };
 
@@ -83,7 +84,19 @@ export const usersFeed = (_, { cursor, limit = 2 }) => {
   }
 }
 
-export const searchUsers = (_, { input: { searchTerm }}) => {
+export const searchUsers = (_, { input: { searchTerm, orderBy }}) => {
+  if (orderBy === 'desc') {
+    return usersData
+      .filter(({ firstName }) => firstName.toLowerCase().search(searchTerm.toLowerCase()) !== -1)
+      .sort((a, b) => b.age - a.age)
+    }
+    
+  if (orderBy === 'asc') {
+    return usersData
+    .filter(({ firstName }) => firstName.toLowerCase().search(searchTerm.toLowerCase()) !== -1)
+    .sort((a, b) => a.age - b.age)
+  }
+
   return usersData.filter(({ firstName }) => firstName.toLowerCase().search(searchTerm.toLowerCase()) !== -1);
 }
 

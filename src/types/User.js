@@ -29,6 +29,7 @@ export const User = `
 
   input SearchUser {
     searchTerm: String
+    orderBy: String
   }
 
 `;
