@@ -29,6 +29,7 @@
     "graphql-server-module-graphiql": "^0.8.2",
     "graphql-subscriptions": "^0.4.3",
     "graphql-tools": "^1.0.0",
+    "jsonwebtoken": "^8.1.0",
     "optics-agent": "^1.1.7",
     "subscriptions-transport-ws": "^0.7.3"
   }
