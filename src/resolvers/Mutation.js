@@ -1,9 +1,11 @@
-import { addUser, updateUser, deleteUser } from "./users";
+import { addUser, updateUser, deleteUser, currentUser, login, signup } from "./users";
 
 export const Mutation = {
   addUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  login,
+  signup
 }
 
 export default Mutation;

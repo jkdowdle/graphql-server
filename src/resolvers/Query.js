@@ -1,10 +1,11 @@
-import { users, user, searchUsers, usersFeed } from './users';
+import { users, user, searchUsers, usersFeed, currentUser } from './users';
 
 export const Query = {
   users,
   user,
   searchUsers,
-  usersFeed
+  usersFeed,
+  currentUser
 }
 
 export default Query;

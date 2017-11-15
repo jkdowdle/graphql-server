@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 let usersData = [
   { id: 0, firstName: 'Elliot', age: 2, createdAt: '10/28/2017-0' },
   { id: 1, firstName: 'Barton', age: 0, createdAt: '10/28/2017-1' },
@@ -9,8 +11,47 @@ let usersData = [
   // { id: 7, firstName: 'Bob', age: 55 },
 ];
 
+let authUsers = [
+  { id: 'zcd', email: 'joshd@gmail.com', password: 'password' },
+  { id: 'drf', email: 'kurtd@gmail.com', password: 'password' },
+  { id: '0.6273072611759374', email: 'jkd@gmail.com', password: 'pass' }
+]
+
+export const currentUser = async (_, args, context) => {
+  console.log('context', context)
+  return context.user
+}
+
+export const login = (_, { email, password }, context) => {
+
+  const user = authUsers.find((user) => user.email === email && user.password === password)
+  
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  return { ...user, jwt: jwt.sign({ id: user.id }, 'super-cool')}
+}
+
+export const signup = (_, { email, password }, context) => {
+
+  const existingUser = authUsers.find((user) => user.email === email)
+
+  if (existingUser) {
+    throw new Error('Email already used')
+  }
+
+  authUsers = [
+    ...authUsers,
+    { id: String(Math.random()), email, password }
+  ]
+
+  const user = authUsers.find((user) => user.email === email)
+
+  return { ...user, jwt: jwt.sign({ id: user.id }, 'super-cool')}
+}
+
 export const users = () => {
-  console.log('users')
   return usersData;
 };
 
@@ -98,6 +139,50 @@ export const searchUsers = (_, { input: { searchTerm, orderBy }}) => {
   }
 
   return usersData.filter(({ firstName }) => firstName.toLowerCase().search(searchTerm.toLowerCase()) !== -1);
+}
+
+export async function setContext(headers, secrets) {
+  const authorization = headers['authorization']
+  const user = await getUser(authorization, secrets).then(res => res).catch(e => console.log(e))
+  return {
+    user,
+    secrets
+  }
+}
+
+async function getUser(authorization, secrets) {
+  const bearerLength = "Bearer ".length
+  if (authorization && authorization.length > bearerLength) {
+
+    const token = authorization.slice(bearerLength)
+
+    const { ok, result } = await new Promise((resolve) => {
+      jwt.verify(token, 'super-cool', (error, result) => {
+        if (error) {
+          resolve({
+            ok: false,
+            result: error
+          })
+        }
+
+        resolve({
+          ok: true,
+          result
+        })
+
+      })
+    })
+
+    if (ok) {
+      const user = await authUsers.find((user) => user.id === result.id)
+
+      console.log('user', user)
+
+      return user
+    }
+
+    return null
+  }
 }
 
 export default users;
