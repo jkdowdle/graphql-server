@@ -143,6 +143,7 @@ export const searchUsers = (_, { input: { searchTerm, orderBy }}) => {
 
 export async function setContext(headers, secrets) {
   const authorization = headers['authorization']
+  console.log('auth', authorization)
   const user = await getUser(authorization, secrets).then(res => res).catch(e => console.log(e))
   return {
     user,
