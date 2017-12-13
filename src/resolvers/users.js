@@ -30,7 +30,8 @@ export const login = (_, { email, password }, context) => {
     throw new Error('User not found')
   }
 
-  return { ...user, jwt: jwt.sign({ id: user.id }, 'super-cool') }
+
+  return { ...user, jwt: jwt.sign({ ...user }, 'super-cool')}
 }
 
 export const signup = (_, { email, password }, context) => {
@@ -44,7 +45,7 @@ export const signup = (_, { email, password }, context) => {
 
   const user = authUsers.find(user => user.email === email)
 
-  return { ...user, jwt: jwt.sign({ id: user.id }, 'super-cool') }
+  return { ...user, jwt: jwt.sign({ id: user.id, ...user }, 'super-cool')}
 }
 
 export const users = () => {
@@ -148,9 +149,9 @@ export const searchUsers = (_, { input: { searchTerm, orderBy } }) => {
 
 export async function setContext(headers, secrets) {
   const authorization = headers['authorization']
-  const user = await getUser(authorization, secrets)
-    .then(res => res)
-    .catch(e => console.log(e))
+  console.log('auth', authorization)
+  const user = await getUser(authorization, secrets).then(res => res).catch(e => console.log(e))
+
   return {
     user,
     secrets
