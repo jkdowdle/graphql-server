@@ -5,7 +5,8 @@ export const Mutation = {
   updateUser,
   deleteUser,
   login,
-  signup
+  signup,
+
 }
 
 export default Mutation;
